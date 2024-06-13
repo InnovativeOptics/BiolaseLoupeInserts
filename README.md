@@ -1,2 +1,3 @@
-# BiolaseLoupeInserts
-Similar to DentalLoupeInserts app, but only Biolase as the mfg
+# DentalLoupeInserts
+
+Deployed at https://invo.shinyapps.io/DentalLoupeInserts/
