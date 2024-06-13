@@ -19,7 +19,7 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ##
 golem::fill_desc(
-  pkg_name = "DentalLoupeInserts", # The Name of the package containing the App
+  pkg_name = "BiolaseLoupeInserts", # The Name of the package containing the App
   pkg_title = "Search Tool for finding Loupe compatible laser eye protection", # The Title of the package containing the App
   pkg_description = "Find laser satefy eyewear for dental lasers. Compatible with magnifying loupes. Use for companies, such as: Heine, Lumadent, Orascoptic, Andau. Ergo and Traditional Style.", # The Description of the package containing the App
   author_first_name = "John", # Your First Name

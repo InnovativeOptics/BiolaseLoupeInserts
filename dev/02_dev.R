@@ -46,7 +46,7 @@ usethis::use_test("app")
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("DentalLoupeInserts")
+usethis::use_vignette("BiolaseLoupeInserts")
 devtools::build_vignettes()
 
 ## Code Coverage----
