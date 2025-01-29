@@ -7,15 +7,27 @@
 #' @import purrr
 #' @import shinyjs
 #' @noRd
+#'
+
+options(
+  gargle_oauth_email = TRUE,
+  gargle_oauth_cache = ".secrets"
+)
 
 
-our_data <- readxl::read_excel("data/Dental_data.xlsx",
-                               sheet = "Lens_details") %>%
+googledrive::drive_auth(cache = ".secrets", email = "innovativeopticsdatabase@gmail.com")
+googlesheets4::gs4_auth(cache = ".secrets", email = "innovativeopticsdatabase@gmail.com")
+
+
+sheet_id <- googledrive::drive_get("Dental_data")$id
+
+
+our_data <- googlesheets4::read_sheet(sheet_id, sheet = "Lens_details") %>%
   mutate(VLT = scales::percent(as.numeric(VLT)),
          `Price(from)` = scales::dollar(as.numeric(`Price(from)`)))
 
-oem_data <- readxl::read_excel("data/Dental_data.xlsx",
-                               sheet = 1) %>%
+
+oem_data <- googlesheets4::read_sheet(sheet_id, sheet = "laser_info") %>%
   filter(`Laser Mfg` == "Biolase")
 
 app_server <- function(input, output, session) {
@@ -147,105 +159,10 @@ app_server <- function(input, output, session) {
     filt_data_laser <- filt_data_laser()
     filt_data_loupe <- filt_data_loupe()
 
-    if(all(sapply(filt_data_laser, "[[", 'Lens') == "Pi1") & nrow(filt_data_loupe) != 0){
-      if(filt_data_loupe$`Compatible Loupe Insert` == "IVR"){
-        print("IVR Pi1")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi1-inview-regular-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVR-Clip-In-Pi1-Lens.jpg"
-          x
-        })
-      } else if(filt_data_loupe$`Compatible Loupe Insert` == "IVL"){
-        print("IVL Pi1")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi1-inview-large-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVL-Clip-In-Pi1-Lens.jpg"
-          x
-        })
-
-      }
-    }
+    #Test for Lens, change image and the link to landing pages
+    DentalLibrary::generate_filt_data_combined(filt_data_laser, filt_data_loupe)
 
 
-    if (all(sapply(filt_data_laser, "[[", 'Lens') == "Pi17") & nrow(filt_data_loupe) != 0){
-      if(filt_data_loupe$`Compatible Loupe Insert` == "IVR"){
-        print("IVR Pi17")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi17-inview-regular-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVR-Clip-In-Pi17-Lens.jpg"
-
-          x
-        })
-      } else if(filt_data_loupe$`Compatible Loupe Insert` == "IVL"){
-        print("IVL Pi17")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi17-inview-large-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVL-Clip-In-Pi17-Lens.jpg"
-          x
-        })
-
-      }
-    }
-
-
-    if (all(sapply(filt_data_laser, "[[", 'Lens') == "Pi19") & nrow(filt_data_loupe) != 0){
-      if(filt_data_loupe$`Compatible Loupe Insert` == "IVR"){
-        print("IVR Pi19")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi19-inview-regular-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVR-Clip-In-Pi19-Lens-1.jpg"
-          x
-        })
-      } else if(filt_data_loupe$`Compatible Loupe Insert` == "IVL"){
-        print("IVL Pi19")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi19-inview-large-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVL-Clip-In-Pi19-Lens-1.jpg"
-          x
-        })
-
-      }
-    }
-
-    ##    if (all(sapply(filt_data_laser, "[[", 'Lens') == "Pi23") & nrow(filt_data_loupe) != 0){
-    ##      if(filt_data_loupe$`Compatible Loupe Insert` == "IVR"){
-    ##        print("IVR Pi23")
-    ##        filt_data_laser <- lapply(filt_data_laser, function(x) {
-    ##          x[['Website']] <- "https://innovativeoptics.com/product/gi1-inview-regular-laser-clip-in/"
-    ##          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVR-Clip-In-Gi1-Lens.jpg"
-    ##          x
-    ##        })
-    ##      } else if(filt_data_loupe$`Compatible Loupe Insert` == "IVL"){
-    ##        print("IVL Pi23")
-    ##        filt_data_laser <- lapply(filt_data_laser, function(x) {
-    ##          x[['Website']] <- "https://innovativeoptics.com/product/gi1-inview-large-laser-clip-in/"
-    ##          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVL-Clip-In-Gi1-Lens.jpg"
-    ##          x
-    ##        })
-
-    ##      }
-    ##    }
-
-    if (all(sapply(filt_data_laser, "[[", 'Lens') == "Pi10") & nrow(filt_data_loupe) != 0){
-      if(filt_data_loupe$`Compatible Loupe Insert` == "IVR"){
-        print("IVR Pi10")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi10-inview-regular-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVR-Clip-In-Pi10-Lens.jpg"
-          x
-        })
-      } else if(filt_data_loupe$`Compatible Loupe Insert` == "IVL"){
-        print("IVL Pi10")
-        filt_data_laser <- lapply(filt_data_laser, function(x) {
-          x[['Website']] <- "https://innovativeoptics.com/product/pi10-inview-large-laser-clip-in/"
-          x[['Image']] <- "https://innovativeoptics.com/wp-content/uploads/2022/05/IVL-Clip-In-Pi10-Lens.jpg"
-          x
-        })
-
-      }
-    }
-
-    list(filt_data_laser = filt_data_laser, filt_data_loupe = filt_data_loupe)
 
   })
 
@@ -256,6 +173,8 @@ app_server <- function(input, output, session) {
     filt_data_laser <- filt_data_combined()$filt_data_laser
     filt_data_loupe <- filt_data_combined()$filt_data_loupe
 
+    print(filt_data_laser[[1]]$Website)
+
     ##print(filt_data_loupe$`Compatible Loupe Insert`)
     ## print(all(sapply(filt_data_laser, "[[", 'Lens') == "Pi1"))
 
@@ -265,6 +184,7 @@ app_server <- function(input, output, session) {
       <div class="row">
       <div class="col-sm-5" id="left-section">
         <div align="left">
+        <p>CLICK HERE TO ORDER</p>
         <a href="',
         filt_data_laser[[.x]]$Website,
         '", target = "_blank", title = "', filt_data_laser[[.x]]$Lens,'frame styles">',
@@ -309,6 +229,22 @@ app_server <- function(input, output, session) {
                          HTML())
     }
 
+    if(all(sapply(filt_data_laser, "[[", 'Website') %in%
+           c("https://innovativeoptics.com/pi1-laser-glasses-frames/", "https://innovativeoptics.com/pi17-laser-glasses-frames/",
+             "https://innovativeoptics.com/pi23-laser-glasses-frames/", "https://innovativeoptics.com/pi19-laser-glasses-frames/"))){
+
+      pattern <- 'href=" https://innovativeoptics.com/pi(1|17|23|19)-laser-glasses-frames/ ", '
+
+      html_code <- map(html_code, ~ gsub(pattern, '', .x)  %>%
+                         HTML())
+
+      pattern2 <- 'CLICK HERE TO ORDER'
+
+      html_code <- map(html_code, ~ gsub(pattern2, 'To order: call 763-425-7789', .x)  %>%
+                         HTML())
+    }
+
+
     html_code
 
   })
@@ -320,7 +256,6 @@ app_server <- function(input, output, session) {
          "run_dent")
   })
 }
-
 
 
 
