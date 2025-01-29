@@ -104,10 +104,11 @@ app_server <- function(input, output, session) {
   })
 
   output$contact_info <- renderUI({
-    if(input$lmfg == "Andau"){
-      h1(strong("To place an order, please, call Andau Customer Service 1-844andau88"))
-    } else{
-      h1(strong("Please call Innovative Optics at 763-425-7789 with any questions"))    }
+#    if(input$lmfg == "Andau"){
+#      h1(strong("To place an order, please, call Andau Customer Service 1-844andau88"))
+#    } else{
+#      h1(strong("Please call Innovative Optics at 763-425-7789 with any questions"))    }
+    h1(strong("Please call Innovative Optics at 763-425-7789 with any questions"))
   })
 
 
@@ -222,12 +223,13 @@ app_server <- function(input, output, session) {
       </div>'
       )
     ))
+#Traci might want this back on later...Andy wants this off. Going with the boss!
 
-    if(input$lmfg == "Andau"){
-      html_code <- map(html_code,
-                       ~ gsub('<div class="col-sm-5" id="left-section">', '<div class="col-sm-5" id="left-section" style="visibility:hidden">', .x) %>%
-                         HTML())
-    }
+#    if(input$lmfg == "Andau"){
+#      html_code <- map(html_code,
+#                       ~ gsub('<div class="col-sm-5" id="left-section">', '<div class="col-sm-5" id="left-section" style="visibility:hidden">', .x) %>%
+#                         HTML())
+#    }
 
     if(all(sapply(filt_data_laser, "[[", 'Website') %in%
            c("https://innovativeoptics.com/pi1-laser-glasses-frames/", "https://innovativeoptics.com/pi17-laser-glasses-frames/",
