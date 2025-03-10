@@ -225,11 +225,11 @@ app_server <- function(input, output, session) {
     ))
 #Traci might want this back on later...Andy wants this off. Going with the boss!
 
-#    if(input$lmfg == "Andau"){
-#      html_code <- map(html_code,
-#                       ~ gsub('<div class="col-sm-5" id="left-section">', '<div class="col-sm-5" id="left-section" style="visibility:hidden">', .x) %>%
-#                         HTML())
-#    }
+    if(input$lmfg == "Andau"){
+      html_code <- map(html_code,
+                       ~ gsub('<div class="col-sm-5" id="left-section">', '<div class="col-sm-5" id="left-section" style="visibility:hidden">', .x) %>%
+                         HTML())
+    }
 
     if(all(sapply(filt_data_laser, "[[", 'Website') %in%
            c("https://innovativeoptics.com/pi1-laser-glasses-frames/", "https://innovativeoptics.com/pi17-laser-glasses-frames/",

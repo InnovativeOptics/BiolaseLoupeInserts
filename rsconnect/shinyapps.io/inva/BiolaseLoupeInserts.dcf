@@ -5,7 +5,7 @@ account: inva
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12192376
-bundleId: 9916879
+bundleId: 9922240
 url: https://inva.shinyapps.io/BiolaseLoupeInserts/
 version: 1
 asMultiple: FALSE
